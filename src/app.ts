@@ -1,20 +1,18 @@
-import * as readline from 'readline/promises';
-import {stdin as input,stdout as output} from 'process';
-import { promises } from 'dns';
+import { ApiService } from "../services/ApiService";
+import { UserService } from "../services/UserService";
+import { UserRequest } from "../models/UserRequest";
 
-const rl=readline.createInterface({input,output});
+async function main() {
+  const apiService = new ApiService(); 
+  const userService = new UserService(apiService);
 
- async function multiplication():Promise<void>{
-const num:number=parseInt(await rl.question('Enter the number : '));
-const limit:number=parseInt(await rl.question('Enter the lkimit: '));
-let int:number=0;
-while(int<limit){
-  int++ 
-  console.log(`${int}*${num}=${int*num}`);
-   
+  try {
+    const request = new UserRequest(1);
+    const user = await userService.fetchUser(request);
+    console.log("User fetched successfully:", user);
+  } catch (error) {
+    console.error("Failed to fetch user");
+  }
 }
-multiplication();
-}
 
-multiplication();
- 
+main();
